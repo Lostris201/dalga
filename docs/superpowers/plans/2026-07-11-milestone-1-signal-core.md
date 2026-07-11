@@ -765,7 +765,9 @@ export function computeCalibration(
   }
   const restAvg = mean(restSamples);
   const naturalHoldAvg = mean(holdSamples);
-  if (naturalHoldAvg <= restAvg * HOLD_OVER_REST_MIN) {
+  // tiny relative tolerance so float accumulation in mean() can't sneak a
+  // hold past an inclusive boundary (e.g. mean of 900×1.2 = 1.20000000000002)
+  if (naturalHoldAvg <= restAvg * HOLD_OVER_REST_MIN * (1 + 1e-9)) {
     return { ok: false, reason: 'implausible' };
   }
   return {
