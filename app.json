@@ -8,7 +8,10 @@
     "scheme": "dalga",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "icon": "./assets/expo.icon",
+      "infoPlist": {
+        "NSMotionUsageDescription": "Dalga uses the motion sensor to reflect your hand's movement in the sea scene during sessions."
+      }
     },
     "android": {
       "adaptiveIcon": {
