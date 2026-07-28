@@ -1,4 +1,5 @@
-import { DeviceMotion, DeviceMotionMeasurement } from 'expo-sensors';
+import { DeviceMotion } from 'expo-sensors';
+import type { DeviceMotionMeasurement } from 'expo-sensors';
 import type { MotionSample } from '../signal/envelope';
 import type { SensorState } from '../types';
 

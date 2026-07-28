@@ -8,8 +8,12 @@ import type { SensorState } from '../src/types';
 
 // Temporary Milestone-1 debug readout; replaced by the real Home in Milestone 2.
 export default function DebugScreen() {
-  const follower = useRef(new EnvelopeFollower()).current;
-  const mirror = useRef(new MirrorSource(DEFAULT_SENS)).current;
+  const followerRef = useRef<EnvelopeFollower | null>(null);
+  const mirrorRef = useRef<MirrorSource | null>(null);
+  if (!followerRef.current) followerRef.current = new EnvelopeFollower();
+  if (!mirrorRef.current) mirrorRef.current = new MirrorSource(DEFAULT_SENS);
+  const follower = followerRef.current;
+  const mirror = mirrorRef.current;
   const [state, setState] = useState<SensorState | 'starting'>('starting');
   const [env, setEnv] = useState(0);
   const [turb, setTurb] = useState(0);

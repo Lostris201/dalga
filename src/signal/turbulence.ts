@@ -16,6 +16,7 @@ export class MirrorSource implements TurbulenceSource {
   private t = 0;
   constructor(private sens: number) {}
   update(env: number, dt: number, _breathCycleProgress: number): number {
+    'worklet';
     const target = turbulenceTarget(env, this.sens);
     this.t += alphaForDt(TAU_MIRROR, dt) * (target - this.t);
     return this.t;
@@ -28,6 +29,7 @@ export class SoftMirrorSource implements TurbulenceSource {
   private t: number | null = null; // seeded from first target: start truthful
   constructor(private sens: number) {}
   update(env: number, dt: number, _breathCycleProgress: number): number {
+    'worklet';
     const target = turbulenceTarget(env, this.sens);
     if (this.t === null) {
       this.t = target;
@@ -48,6 +50,7 @@ const COMPANION_DECAY_PER_S = 0.00022 * 60;
 export class CompanionSource implements TurbulenceSource {
   private level = COMPANION_START;
   update(_env: number, dt: number, breathCycleProgress: number): number {
+    'worklet';
     this.level = Math.max(COMPANION_FLOOR, this.level - COMPANION_DECAY_PER_S * dt);
     return this.level + Math.sin(breathCycleProgress * 2 * Math.PI) * 0.04;
   }

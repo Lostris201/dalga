@@ -18,7 +18,10 @@ const REF_DT = 1 / 60;
 /** τ such that α = 1 − exp(−REF_DT/τ) equals the prototype's per-frame alpha at 60Hz. */
 export const tauForAlphaAt60 = (alphaAt60: number): number => -REF_DT / Math.log(1 - alphaAt60);
 
-export const alphaForDt = (tauS: number, dt: number): number => 1 - Math.exp(-dt / tauS);
+export const alphaForDt = (tauS: number, dt: number): number => {
+  'worklet';
+  return 1 - Math.exp(-dt / tauS);
+};
 
 const TAU_GRAVITY = tauForAlphaAt60(0.02); // ≈ 0.825s
 const TAU_RISE = tauForAlphaAt60(0.25);    // ≈ 0.058s
@@ -41,9 +44,9 @@ export class EnvelopeFollower {
     let ax: number, ay: number, az: number;
     const lin = s.acceleration;
     const incl = s.accelerationIncludingGravity;
-    if (lin && Number.isFinite(lin.x)) {
+    if (lin && Number.isFinite(lin.x) && Number.isFinite(lin.y) && Number.isFinite(lin.z)) {
       ax = lin.x; ay = lin.y; az = lin.z;
-    } else if (incl && Number.isFinite(incl.x)) {
+    } else if (incl && Number.isFinite(incl.x) && Number.isFinite(incl.y) && Number.isFinite(incl.z)) {
       const g = this.gravity;
       if (!this.gravityInit) {
         g.x = incl.x; g.y = incl.y; g.z = incl.z;
